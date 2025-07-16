@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // ← importar navegador
 
-const Login = () => {
+const Login = ({ handleAuthentication }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mensaje, setMensaje] = useState('');
@@ -22,6 +22,8 @@ const Login = () => {
 
       if (response.ok) {
         setMensaje(`Bienvenido, ${data.admin.nombre}`);
+        // Llamamos la función handleAuthentication para marcar la autenticación como exitosa
+        handleAuthentication(true);
         // Redirige al panel luego de 1 segundo
         setTimeout(() => {
           navigate('/panel');
@@ -29,10 +31,10 @@ const Login = () => {
       } else {
         setMensaje(data.message || 'Error');
       }
-} catch (error) {
-  console.error('Error al hacer login:', error);
-  setMensaje('Error de conexión con el servidor');
-}
+    } catch (error) {
+      console.error('Error al hacer login:', error);
+      setMensaje('Error de conexión con el servidor');
+    }
   };
 
   return (
